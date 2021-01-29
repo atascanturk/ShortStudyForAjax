@@ -1,0 +1,117 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="p-2">
+            <h4 class="text-center">Bir Kullanıcı Getir</h4>
+            <input type="text" id="kullaniciId" class="form-control" />
+            <button type="button" id="birKullaniciGetir" class="btn btn-block btn-info ">Get</button>
+        </div>
+        <div class="p-2" id="birKullanici">
+
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="p-2">
+            <button type="button" id="tumKullanicilariGetir" class="btn btn-block btn-info ">Get All</button>
+
+        </div>
+        <div class="p-2" id="kullaniciListesi">
+            <div id="loader" class="d-flex align-items-center" style="display:none!important;">
+                <strong>Loading, please wait...</strong>
+                <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-md-12">
+            <input type="text" class="form-control" id="frmKullaniciId" />
+            <input type="text" class="form-control" id="frmKullaniciAd" />
+            <button type="button" id="kullaniciEkle" class="btn btn-block btn-info ">Add</button>
+
+        </div>
+
+</div>
+
+@section Scripts{
+
+
+    <script>
+
+
+        $(document).ready(function () {
+            $("#birKullaniciGetir").click(I => {
+                let id = $("#kullaniciId").val();
+                $.ajax({
+
+                    contentType: "application/json; charset=Utf-8;",
+                    dataType: "json",
+                    type: "Get",
+                    url: "/Home/GetById",
+                    data: { userId: id },
+                    success: function (canturk) {
+                        let obje = jQuery.parseJSON(canturk)
+                        //console.log(canturk);
+                        let htmlString = `<table class = table table-hover table-sm > <tr> <th>Kullanıcı Id </th><td>  ${obje.Id} </td>  </tr> <tr> <th>Kullanıcı Ad</th><td>${obje.Name} </td>  </tr>  </table>`;
+                        $("#birKullanici").html(htmlString);
+                    }
+                });
+            });
+
+
+            $("#tumKullanicilariGetir").click(function () {
+                $.ajax({
+                    type: "Get",
+                    dataType: "json",
+                    contentType: "application/json; charset= Utf-8;",
+                    url: "/Home/List",
+                    beforeSend: function () {
+                        $("#loader").show();
+                    },
+
+                    success: function (data) {
+                        $("#loader").hide();
+                        let users = jQuery.parseJSON(data);
+                        let htmlString = "<table class= 'table table-hover table-sm' ><tr>  <th>Kullanıcı Id</th><th>Kullanıcı Ad </th></tr>";
+                        $.each(users, (index, value) => {
+                            htmlString += `<tr> <td>${value.Id} </td> <td> ${value.Name}</td></tr>`
+                        });
+                        htmlString += "</table>";
+                        $("#kullaniciListesi").html(htmlString);
+                    }
+                });
+
+            });
+            $("#kullaniciEkle").click(function () {
+                let user = {
+                    Name: $("#frmKullaniciAd").val(),
+                    Id: $("#frmKullaniciId").val()
+                };
+
+                $.ajax({
+                    type: "Post",
+                    url: "/Home/Add",
+                    data: user,
+                    success: function (gelenCevap) {
+                        let gelenObje = jQuery.parseJSON(gelenCevap);
+                        console.log(gelenObje.Name);
+                        alert(gelenObje.Name + " başarı ile eklendi.");
+                    }
+
+
+
+                });
+            });
+
+        });
+    </script>
+
+}

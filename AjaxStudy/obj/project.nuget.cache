@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "GlsfL2sfWkKEp9Ht8Fo+chWf80GhHTFKvAQsdW1O/wjb4lWQ5s7EUGFOLl9c2zgNCnVHgB651SvgkMm1/G5MLw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\hasan\\source\\repos\\AjaxStudy\\AjaxStudy\\AjaxStudy.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\hasan\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
